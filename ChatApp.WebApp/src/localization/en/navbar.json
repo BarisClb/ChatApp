@@ -1,0 +1,33 @@
+{
+	"Navbar": {
+		"items": [
+			{ "text": "Chats", "path": "/chats" },
+			{ "text": "Public Chat", "path": "/public-chat" },
+			{ "text": "People", "path": "/people" },
+			{ "text": "Friends", "path": "/friends" }
+		],
+		"profile": {
+			"title": "Hello, {username, select, Guest {Guest} other {{username}}}.",
+			"loginItems": [
+				{
+					"text": "Profile",
+					"path": "/profile"
+				},
+				{
+					"text": "Logout",
+					"path": "/logout"
+				}
+			],
+			"logoutItems": [
+				{
+					"text": "Login",
+					"path": "/login"
+				},
+				{
+					"text": "Register",
+					"path": "/register"
+				}
+			]
+		}
+	}
+}
