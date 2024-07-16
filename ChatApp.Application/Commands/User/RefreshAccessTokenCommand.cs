@@ -8,7 +8,6 @@ using ChatApp.Application.Models.Responses.Common;
 using ChatApp.Application.Resources;
 using MediatR;
 using Microsoft.Extensions.Localization;
-using System.Net;
 using System.Text;
 
 namespace ChatApp.Application.Commands.User
@@ -37,11 +36,11 @@ namespace ChatApp.Application.Commands.User
         public async Task<ApiResponse<UserSessionResponse>> Handle(RefreshAccessTokenCommand request, CancellationToken cancellationToken)
         {
             if (request.RefreshToken == null)
-                throw new AuthorizationException() { PublicErrorMessage = _localizer.GetString(LocalizationKeys.SessionTimedOut), Method = "RefreshAccessTokenCommand", ErrorCode = (int)HttpStatusCode.Unauthorized };
+                throw new AuthorizationException() { PublicErrorMessage = _localizer.GetString(LocalizationKeys.SessionTimedOut), Method = "RefreshAccessTokenCommand" };
 
             var refreshTokenClaims = await _tokenService.GetRefreshTokenClaims(request.RefreshToken);
             if (refreshTokenClaims == null)
-                throw new AuthorizationException() { PublicErrorMessage = _localizer.GetString(LocalizationKeys.SessionTimedOut), Method = "RefreshAccessTokenCommand", ErrorCode = (int)HttpStatusCode.Unauthorized };
+                throw new AuthorizationException() { PublicErrorMessage = _localizer.GetString(LocalizationKeys.SessionTimedOut), Method = "RefreshAccessTokenCommand" };
 
             // TODO:
 

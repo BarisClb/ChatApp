@@ -1,10 +1,11 @@
-import { NavbarItem } from "../NavbarItems";
+import { NavbarItem } from "@/application/models/props/NavbarProps";
 import { SessionUser } from "../common/Session";
 
 export type NavbarProfileProps = {
-	title: string;
-	loginItems: NavbarItem[];
-	logoutItems: NavbarItem[];
-   locale: string;
-	session: SessionUser
+	Title: string;
+	LoginItems: NavbarItem[];
+	LogoutItems: NavbarItem[];
+   Locale: string;
+	Session: SessionUser;
+	LogoutButton: string;
 };

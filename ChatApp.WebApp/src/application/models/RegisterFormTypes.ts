@@ -5,11 +5,9 @@ export type RegisterFormInput = {
 	Username: string;
 	Password: string;
 	LanguageCode: string;
-}
+};
 
 export type RegisterFormLanguage = {
-	code: string;
-	name: string;
-}
-
-export type RegisterFormSubmitFunction = (formData: RegisterFormInput) => string[];
+	Code: string;
+	Name: string;
+};

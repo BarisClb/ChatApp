@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using ChatApp.Application.Helpers;
+﻿using ChatApp.Application.Helpers;
 using ChatApp.Application.Interfaces.Repositories.Sql.Dapper;
 using ChatApp.Application.Interfaces.Services;
 using ChatApp.Application.Models.Responses;

@@ -1,12 +1,9 @@
-import { LoginFormInput } from "@/application/models/LoginFormTypes";
-import { userServiceServer as _userService } from "@/application/services/server/userService";
+"use server";
+
 import React from "react";
 
 async function TestServerPage() {
-	const loginForm = { userField: "admin", password: "VerySecretPassword123" } as LoginFormInput;
-	var response = await _userService.userLogin(loginForm);
-	console.log(response);
+	console.log(`server page session: ${"session"}`);
 	return <div>TestServerPage</div>;
 }
-
 export default TestServerPage;

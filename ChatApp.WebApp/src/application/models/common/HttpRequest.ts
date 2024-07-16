@@ -1,14 +1,14 @@
 export class HttpRequest {
-    public constructor(init?:Partial<HttpRequest>) {
-        Object.assign(this, init);
-    }
+	public constructor(init?: Partial<HttpRequest>) {
+		Object.assign(this, init);
+	}
 
-    requestMethod!: string 
-    requestUrl!: string 
-    requestBody!: object 
-    requestQueryStrings!: string[]
-    requestHeaders!: StringTuple[]
-    retryRequest?: boolean
+	RequestMethod!: string;
+	RequestUrl!: string;
+	RequestBody!: object;
+	RequestQueryStrings!: string[];
+	RequestHeaders!: StringTuple[];
+	RetryRequest?: boolean;
 }
 
-type StringTuple = [string, string];
+export type StringTuple = [string, string];

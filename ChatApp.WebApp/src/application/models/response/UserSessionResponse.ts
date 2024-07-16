@@ -1,18 +1,18 @@
 export type UserTokenResponse = {
-	accessToken: string;
-	refreshToken: string;
+	AccessToken: string;
+	RefreshToken: string;
 };
 
 export type UserSessionResponse = {
-	userId: string;
-	userStatus: number;
-	firstName: string;
-	lastName: string;
-	emailAddress: string;
-	username: string;
-	languageCode: string;
-	userDateCreated: Date;
-	isAdmin: boolean;
-	accessToken: string;
-	refreshToken: string;
+	UserId: string;
+	UserStatus: number;
+	FirstName: string;
+	LastName: string;
+	EmailAddress: string;
+	Username: string;
+	LanguageCode: string;
+	UserDateCreated: Date;
+	IsAdmin: boolean;
+	AccessToken: string;
+	RefreshToken: string;
 };

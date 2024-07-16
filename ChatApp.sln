@@ -3,15 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34018.315
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatApp.WebApi", "ChatApp.WebApi\ChatApp.WebApi.csproj", "{B7C0535B-5F5A-4C7C-A082-5F7D0DC786A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatApp.WebApi", "ChatApp.WebApi\ChatApp.WebApi.csproj", "{B7C0535B-5F5A-4C7C-A082-5F7D0DC786A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatApp.Application", "ChatApp.Application\ChatApp.Application.csproj", "{A88D81B4-7B8C-4E29-87ED-32E78A20E18F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatApp.Application", "ChatApp.Application\ChatApp.Application.csproj", "{A88D81B4-7B8C-4E29-87ED-32E78A20E18F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatApp.Persistence", "ChatApp.Persistence\ChatApp.Persistence.csproj", "{6EBBCED7-02D9-4B9A-A287-FD85951EEBCB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatApp.Persistence", "ChatApp.Persistence\ChatApp.Persistence.csproj", "{6EBBCED7-02D9-4B9A-A287-FD85951EEBCB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatApp.Domain", "ChatApp.Domain\ChatApp.Domain.csproj", "{F31ED1A2-EEB2-4C49-9DC8-A210C8FD66B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatApp.Domain", "ChatApp.Domain\ChatApp.Domain.csproj", "{F31ED1A2-EEB2-4C49-9DC8-A210C8FD66B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatApp.Infrastructure", "ChatApp.Infrastructure\ChatApp.Infrastructure.csproj", "{076371D8-8DC5-435A-823E-0319E0FD7CCA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatApp.Infrastructure", "ChatApp.Infrastructure\ChatApp.Infrastructure.csproj", "{076371D8-8DC5-435A-823E-0319E0FD7CCA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatApp.WebHub", "ChatApp.WebHub\ChatApp.WebHub.csproj", "{9B22A995-F7CE-48A2-9753-25F1F465E6E7}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{9EC0F9FC-1318-4679-AC04-E8EB99586A3D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +43,14 @@ Global
 		{076371D8-8DC5-435A-823E-0319E0FD7CCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{076371D8-8DC5-435A-823E-0319E0FD7CCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{076371D8-8DC5-435A-823E-0319E0FD7CCA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B22A995-F7CE-48A2-9753-25F1F465E6E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B22A995-F7CE-48A2-9753-25F1F465E6E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B22A995-F7CE-48A2-9753-25F1F465E6E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B22A995-F7CE-48A2-9753-25F1F465E6E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EC0F9FC-1318-4679-AC04-E8EB99586A3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EC0F9FC-1318-4679-AC04-E8EB99586A3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EC0F9FC-1318-4679-AC04-E8EB99586A3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EC0F9FC-1318-4679-AC04-E8EB99586A3D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

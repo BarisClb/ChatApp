@@ -1,10 +1,19 @@
-﻿namespace ChatApp.Application.Models.Responses.Common
+﻿using Newtonsoft.Json;
+
+namespace ChatApp.Application.Models.Responses.Common
 {
     public sealed class ApiResponse<T> where T : class
     {
+        [JsonProperty("Data")]
         public T Data { get; set; }
+
+        [JsonProperty("StatusCode")]
         public int StatusCode { get; set; }
+
+        [JsonProperty("IsSuccess")]
         public bool IsSuccess { get; set; }
+
+        [JsonProperty("Errors")]
         public List<string> Errors { get; set; }
 
 

@@ -1,13 +1,11 @@
 ﻿using ChatApp.Application.Interfaces.Helpers;
 using ChatApp.Application.Interfaces.Services;
 using ChatApp.Application.Models.Auth;
-using ChatApp.Application.Models.Exceptions;
 using ChatApp.Application.Resources;
 using ChatApp.Domain.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Localization;
 using System.Globalization;
-using System.Net;
 
 namespace ChatApp.Application.Helpers
 {
@@ -103,7 +101,7 @@ namespace ChatApp.Application.Helpers
             return new()
             {
                 AccessTokenId = (accessTokenClaims?.AccessTokenId != null && Guid.TryParse(accessTokenClaims.AccessTokenId, out Guid parsedAccessTokenId)) ? parsedAccessTokenId : null,
-                UserId = (accessTokenClaims?.UserId != null && Int32.TryParse(accessTokenClaims.UserId, out int parsedUserId)) ? parsedUserId : null,
+                UserId = (accessTokenClaims?.UserId != null && Guid.TryParse(accessTokenClaims.UserId, out Guid parsedUserId)) ? parsedUserId : null,
                 FirstName = accessTokenClaims?.FirstName,
                 LastName = accessTokenClaims?.LastName,
                 Username = accessTokenClaims?.Username,

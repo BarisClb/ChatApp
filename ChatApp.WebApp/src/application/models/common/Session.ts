@@ -1,39 +1,39 @@
 export interface Session {
-	user: SessionUser;
-	tokens: SessionTokens;
+	User: SessionUser;
+	Tokens: SessionTokens;
 }
 
 export interface SessionUser {
-	userId: string;
-	firstName: string;
-	lastName: string;
-	username: string;
-	emailAddress: string;
-	languageCode: string;
-	userStatus: number;
-	isAdmin: boolean;
-	userDateCreated: Date;
+	UserId: string;
+	FirstName: string;
+	LastName: string;
+	Username: string;
+	EmailAddress: string;
+	LanguageCode: string;
+	UserStatus: number;
+	IsAdmin: boolean;
+	UserDateCreated: Date;
 }
 
 export interface SessionTokens {
-	accessToken: string;
-	refreshToken: string;
+	AccessToken: string;
+	RefreshToken: string;
 }
 
 export interface JwtPayload {
-	iss: string;
-	iat: number;
-	aud: string;
-	nbf: number;
-	exp: number;
-	accessTokenId: string;
-	userId: string;
-	firstName: string;
-	lastName: string;
-	username: string;
-	emailAddress: string;
-	languageCode: string;
-	userStatus: number;
-	isAdmin: boolean;
-	userDateCreated: Date;
+	Iss: string;
+	Iat: number;
+	Aud: string;
+	Nbf: number;
+	Exp: number;
+	AccessTokenId: string;
+	UserId: string;
+	FirstName: string;
+	LastName: string;
+	Username: string;
+	EmailAddress: string;
+	LanguageCode: string;
+	UserStatus: number;
+	IsAdmin: boolean;
+	UserDateCreated: Date;
 }

@@ -1,52 +1,56 @@
+"use server";
+
 import React from "react";
 import Navbar from "./navbar";
+import { headers } from "next/headers";
 import { useLocale } from "next-intl";
-import { NavbarItem } from "@/application/models/NavbarItems";
 import { NavbarProfileProps } from "@/application/models/props/NavbarProfileProps";
 import { Constants } from "@/application/helpers/Constants";
-import { LanguageSwitcherLanguage } from "@/application/models/LanguageSwitcherLanguage";
 import { NavbarProps } from "@/application/models/props/NavbarProps";
 import { LanguageSwitcherProps } from "@/application/models/props/LanguageSwitcherProps";
 import { getTranslations } from "next-intl/server";
-import { headers } from "next/headers";
-import { authService as _authService } from "@/application/services/server/authService";
+import { getSession as _getSession } from "@/application/server/services/authService";
+import { NavbarLocalizationModel } from "@/localization/models/navbarLocalizationModels";
+import { LanguageSwitcherLocalizationModel } from "@/localization/models/languageSwitcherLocalizationModels";
 
 async function NavbarWrapper() {
-	const headersList = headers();
-	const pathnameWithoutLocale = headersList.get("x-pathname-without-locale") || "";
+	const pathnameWithoutLocale = headers()?.get("x-pathname-without-locale") || "";
 	const currentLanguage = useLocale();
-	console.log(currentLanguage);
-	const session = await _authService.getSession();
-	const translations = await getTranslations("Navbar");
-	const navbarItems = translations.raw("items") as NavbarItem[];
-	const navbarProfileLoginItems = translations.raw("profile.loginItems") as NavbarItem[];
-	const navbarProfileLogoutItems = translations.raw("profile.logoutItems") as NavbarItem[];
-	const languageList = (
-		(await getTranslations("LanguageSwitcher")).raw("languages") as LanguageSwitcherLanguage[]
-	).filter((lang) => {
-		return Constants.languages.includes(lang.code);
+	const session = await _getSession();
+	const translations = await getTranslations();
+	const navbarTranslations = translations.raw("Navbar") as NavbarLocalizationModel;
+	const navbarProfileLoginItems = navbarTranslations.Profile.LoginItems;
+	const navbarProfileLogoutItems = navbarTranslations.Profile.LogoutItems;
+	const languageSwitcherTranslations = translations.raw(
+		"LanguageSwitcher"
+	) as LanguageSwitcherLocalizationModel;
+	const languageList = languageSwitcherTranslations.Languages.filter((lang) => {
+		return Constants.Languages.includes(lang.Code);
 	});
+	const navbarProfileTitle = translations("Navbar.Profile.Title", {
+		username: session?.FirstName ?? "Guest",
+	});
+
 	const navbarProfileProps = {
-		title: translations("profile.title", {
-			username: session?.firstName ?? "GuestGuestGuestGuestGuestGuest",
-		}),
-		loginItems: navbarProfileLoginItems,
-		logoutItems: navbarProfileLogoutItems,
-		locale: currentLanguage,
-		session: session,
+		Title: navbarProfileTitle,
+		LoginItems: navbarProfileLoginItems,
+		LogoutItems: navbarProfileLogoutItems,
+		Locale: currentLanguage,
+		Session: session,
+		LogoutButton: translations("Navbar.Profile.LogoutButton"),
 	} as NavbarProfileProps;
 
 	const languageSwitcherProps = {
-		languageList: languageList,
-		currentLanguage: currentLanguage,
-		currentPathname: pathnameWithoutLocale,
+		LanguageList: languageList,
+		CurrentLanguage: currentLanguage,
+		CurrentPathname: pathnameWithoutLocale,
 	} as LanguageSwitcherProps;
 
 	const navbarProps = {
-		items: navbarItems,
-		locale: currentLanguage,
-		navbarProfileProps: navbarProfileProps,
-		languageSwitcherProps: languageSwitcherProps,
+		Items: navbarTranslations.Items,
+		Locale: currentLanguage,
+		NavbarProfileProps: navbarProfileProps,
+		LanguageSwitcherProps: languageSwitcherProps,
 	} as NavbarProps;
 
 	return <Navbar props={navbarProps} />;

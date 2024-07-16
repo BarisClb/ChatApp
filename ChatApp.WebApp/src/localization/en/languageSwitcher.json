@@ -1,0 +1,14 @@
+{
+	"LanguageSwitcher": {
+		"Languages": [
+			{
+				"Name": "English",
+				"Code": "en"
+			},
+			{
+				"Name": "Turkish",
+				"Code": "tr"
+			}
+		]
+	}
+}

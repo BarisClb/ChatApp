@@ -1,5 +1,5 @@
 {
-   "Errors":{
-      "globalError": "Beklenmeyen bir sorun oluştu."
-   }
+	"Errors": {
+		"GlobalError": "Beklenmeyen bir sorun oluştu."
+	}
 }

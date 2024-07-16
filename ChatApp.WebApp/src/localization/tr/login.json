@@ -1,5 +1,16 @@
 {
 	"Login": {
-		"userField": "Username veya Email"
+		"Fields": { "UserField": "Kullanıcı Adı veya Email Adresi", "Password": "Şifre" },
+		"Misc": {
+			"ShowPassword": "Göster",
+			"HidePassword": "Gizle",
+			"LoginButton": "Gönder",
+			"LoginHeader": "Giriş Yap"
+		},
+		"Errors": {
+			"LoginFieldNotEmpty": "Kullanıcı Adı veya Email Adresi girmelisiniz.",
+			"PasswordNotEmpty": "Şifrenizi girmelisiniz.",
+			"GenericError": "Giriş yapma işlemi başarısız oldu."
+		}
 	}
 }

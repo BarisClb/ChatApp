@@ -1,33 +1,30 @@
 {
 	"Navbar": {
-		"items": [
-			{ "text": "Chats", "path": "/chats" },
-			{ "text": "Public Chat", "path": "/public-chat" },
-			{ "text": "People", "path": "/people" },
-			{ "text": "Friends", "path": "/friends" }
+		"Items": [
+			{ "Text": "Chats", "Path": "/chats" },
+			{ "Text": "Public Chat", "Path": "/public-chat" },
+			{ "Text": "People", "Path": "/people" },
+			{ "Text": "Friends", "Path": "/friends" }
 		],
-		"profile": {
-			"title": "Hello, {username, select, Guest {Guest} other {{username}}}.",
-			"loginItems": [
+		"Profile": {
+			"Title": "Hello, {username, select, Guest {Guest} other {{username}}}",
+			"LoginItems": [
 				{
-					"text": "Profile",
-					"path": "/profile"
-				},
-				{
-					"text": "Logout",
-					"path": "/logout"
+					"Text": "Profile",
+					"Path": "/profile"
 				}
 			],
-			"logoutItems": [
+			"LogoutItems": [
 				{
-					"text": "Login",
-					"path": "/login"
+					"Text": "Login",
+					"Path": "/login"
 				},
 				{
-					"text": "Register",
-					"path": "/register"
+					"Text": "Register",
+					"Path": "/register"
 				}
-			]
+			],
+			"LogoutButton": "Log Out"
 		}
 	}
 }

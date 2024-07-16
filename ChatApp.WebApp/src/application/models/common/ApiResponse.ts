@@ -1,14 +1,14 @@
 export interface ApiResponse<T> {
-	data: T;
-	statusCode: number;
-	isSuccess: boolean;
-	errors: string[];
-	tokens: ApiResponseToken;
+	Data: T;
+	StatusCode: number;
+	IsSuccess: boolean;
+	Errors: string[];
+	Tokens?: ApiResponseToken | null;
 }
 
 interface ApiResponseToken {
-	accessToken: string;
-	refreshToken: string;
+	AccessToken: string;
+	RefreshToken: string;
 }
 
 export type NoContent = {};

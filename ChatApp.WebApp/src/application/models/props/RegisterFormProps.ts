@@ -1,9 +1,11 @@
 import {
-	RegisterFormLanguage,
-	RegisterFormSubmitFunction,
-} from "@/application/models/RegisterFormTypes";
+	RegisterLocalizationLanguageModel,
+	RegisterLocalizationModel,
+} from "@/localization/models/registerLocalizationModels";
 
 export type RegisterFormProps = {
-	languages: RegisterFormLanguage[];
-	submitForm: RegisterFormSubmitFunction;
+	Languages: RegisterLocalizationLanguageModel[];
+	Localization: RegisterLocalizationModel;
+	Locale: string;
+	RefererUrl: string;
 };

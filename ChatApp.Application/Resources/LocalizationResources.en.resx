@@ -184,7 +184,7 @@
     <value>Username is used by another User. Please try another Username.</value>
   </data>
   <data name="SessionTimedOut" xml:space="preserve">
-    <value>Your session has timed out, please Log In again.</value>
+    <value>Your session has timed out, please Login again.</value>
   </data>
   <data name="Unauthorized" xml:space="preserve">
     <value>You are Unauthorized for this action.</value>

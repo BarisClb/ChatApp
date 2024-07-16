@@ -1,5 +1,19 @@
 {
 	"Login": {
-		"userField": "Username or Email"
+		"Fields": {
+			"UserField": "Username or Email",
+			"Password": "Password"
+		},
+		"Misc": {
+			"ShowPassword": "Show",
+			"HidePassword": "Hide",
+			"LoginButton": "Submit",
+			"LoginHeader": "Login"
+		},
+		"Errors": {
+			"LoginFieldNotEmpty": "You must enter your Username or Email Address.",
+			"PasswordNotEmpty": "You must enter your password.",
+			"GenericError": "Login failed."
+		}
 	}
 }

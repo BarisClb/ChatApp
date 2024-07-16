@@ -46,7 +46,7 @@ namespace ChatApp.Application.Queries.User
 
     public class GetUserByUsernameQueryData
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public EntityStatusType Status { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

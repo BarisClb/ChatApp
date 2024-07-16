@@ -4,7 +4,6 @@ import { Inter } from "next/font/google";
 // import ReduxContextProvider from "@/providers/redux-context-provider";
 // import LoadingContextProvider from "@/providers/loading-context-provider";
 import ThemeContextProvider from "@/providers/theme-context-provider";
-import NextAuthContextProvider from "@/providers/next-auth-context-provider";
 import NavbarWrapper from "@/components/navbar/navbar-wrapper";
 import { NextIntlClientProvider, useMessages } from "next-intl";
 
@@ -26,7 +25,7 @@ function RootLayout({
 	return (
 		<html lang={locale}>
 			<body
-				className={`${inter.className} tw-bg-neutral-200 dark:tw-bg-neutral-800 tw-color tw-text-black dark:tw-text-white`}
+				className={`${inter.className} tw-bg-neutral-200 dark:tw-bg-gray-900 tw-color tw-text-black dark:tw-text-white`}
 			>
 				{/* <ReduxContextProvider> */}
 				<NextIntlClientProvider messages={messages}>

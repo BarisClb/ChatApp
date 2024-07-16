@@ -1,0 +1,25 @@
+version: '3.4'
+
+# services:
+#   chatapp.webapi:
+#     environment:
+#       - ASPNETCORE_ENVIRONMENT=Production
+#       - ASPNETCORE_HTTP_PORTS=8080
+#     ports:
+#       - "7502:8080"
+      
+#   chatapp.webhub:
+#     environment:
+#       - ASPNETCORE_ENVIRONMENT=Production
+#       - ASPNETCORE_HTTP_PORTS=8080
+#       - ASPNETCORE_HTTPS_PORTS=8081
+#     ports:
+#       - "7503:8080"
+#       - "7504:8081"
+
+#   chatapp.webapp:
+#     ports:
+#       - "7501:3000"
+#     depends_on:
+#       - chatapp.webapi
+#       - chatapp.webhub

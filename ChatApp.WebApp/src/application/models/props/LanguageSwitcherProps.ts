@@ -1,7 +1,7 @@
-import { LanguageSwitcherLanguage } from "../LanguageSwitcherLanguage";
+import { LanguageSwitcherLanguage } from "@/application/models/props/LanguageSwitcherLanguage";
 
 export type LanguageSwitcherProps = {
-	languageList: LanguageSwitcherLanguage[];
-	currentLanguage: string;
-   currentPathname: string;
+	LanguageList: LanguageSwitcherLanguage[];
+	CurrentLanguage: string;
+   CurrentPathname: string;
 };

@@ -23,7 +23,7 @@ namespace ChatApp.Application.Configurations.Middlewares
         }
 
 
-        public async Task Invoke(HttpContext context)
+        public async Task Invoke(HttpContext context, IStringLocalizer<LocalizationResources> _localization) // TODO: try initalizing here for localization
         {
             try
             {
@@ -48,6 +48,7 @@ namespace ChatApp.Application.Configurations.Middlewares
             switch (exception)
             {
                 case ApiException ex:
+                    logException = ex.LogException;
                     if (ex.ErrorCode != null)
                         httpCode = ex.ErrorCode ?? (int)HttpStatusCode.InternalServerError;
                     if (!string.IsNullOrEmpty(ex.PublicErrorMessage))
@@ -58,12 +59,17 @@ namespace ChatApp.Application.Configurations.Middlewares
                         exception = ex.OriginalException;
                     if (!string.IsNullOrEmpty(ex.OverrideLogMessage))
                         overrideLogMessage = ex.OverrideLogMessage;
-                    logException = ex.LogException;
                     break;
                 case ApiValidationException ex:
-                    logException = ex.LogError;
+                    logException = ex.LogException;
                     httpCode = (int)HttpStatusCode.BadRequest;
                     errors.AddRange(ex.Errors);
+                    break;
+                case AuthorizationException ex:
+                    logException = ex.LogException;
+                    httpCode = (int)HttpStatusCode.Unauthorized;
+                    if (!string.IsNullOrEmpty(ex.PublicErrorMessage))
+                        errors.Add(ex.PublicErrorMessage);
                     break;
                 default:
                     break;

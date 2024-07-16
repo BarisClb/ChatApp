@@ -1,10 +1,8 @@
 ﻿using ChatApp.Application.Interfaces.Repositories.Sql.Efc;
 using ChatApp.Domain.Entities;
+using ChatApp.Domain.Enums;
 using ChatApp.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
-using static Dapper.SqlMapper;
-using System.Linq;
-using ChatApp.Domain.Enums;
 
 namespace ChatApp.Persistence.Repositories.Sql.Efc
 {

@@ -1,5 +1,4 @@
 ﻿using ChatApp.Domain.Entities;
-using static Dapper.SqlMapper;
 
 namespace ChatApp.Application.Interfaces.Repositories.Sql.Efc
 {

@@ -1,5 +1,4 @@
-﻿using ChatApp.Application.Commands.User;
-using ChatApp.Application.Models.Auth;
+﻿using ChatApp.Application.Models.Auth;
 using ChatApp.Application.Models.Responses;
 using ChatApp.Application.Queries.User;
 
@@ -31,7 +30,7 @@ namespace ChatApp.Application.Helpers
         {
             return new()
             {
-                UserId = Int32.TryParse(tokenData?.AccessTokenClaims?.UserId, out int parsedUserId) ? parsedUserId : null,
+                UserId = Guid.TryParse(tokenData?.AccessTokenClaims?.UserId, out Guid parsedUserId) ? parsedUserId : null,
                 UserStatus = Int32.TryParse(tokenData?.AccessTokenClaims?.UserStatus, out int parsedUserStatus) ? parsedUserStatus : null,
                 FirstName = tokenData?.AccessTokenClaims?.FirstName,
                 LastName = tokenData?.AccessTokenClaims?.LastName,

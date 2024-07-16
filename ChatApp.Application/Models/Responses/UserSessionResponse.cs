@@ -2,7 +2,7 @@
 {
     public class UserSessionResponse
     {
-        public int? UserId { get; set; }
+        public Guid? UserId { get; set; }
         public int? UserStatus { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }

@@ -6,7 +6,7 @@ namespace ChatApp.Application.Queries.UserToken
 {
     public class GetUserTokenByUserAndRefreshTokenIdQuery : IRequest<GetUserTokenByUserAndRefreshTokenIdQueryResponse>
     {
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
         public Guid RefreshTokenId { get; set; }
     }
 
@@ -22,7 +22,7 @@ namespace ChatApp.Application.Queries.UserToken
 
         public async Task<GetUserTokenByUserAndRefreshTokenIdQueryResponse> Handle(GetUserTokenByUserAndRefreshTokenIdQuery request, CancellationToken cancellationToken)
         {
-            if (request.UserId == 0 || request.RefreshTokenId == Guid.Empty)
+            if (request.UserId == Guid.Empty || request.RefreshTokenId == Guid.Empty)
                 return null;
 
             return await _sqlDapperRepository.QueryFirstOrDefaultAsync<GetUserTokenByUserAndRefreshTokenIdQueryResponse>(SqlQueryHelper.GetUserTokenByUserAndRefreshTokenIdQuery, new { UserId = request.UserId, RefreshTokenId = request.RefreshTokenId });
@@ -31,7 +31,7 @@ namespace ChatApp.Application.Queries.UserToken
 
     public class GetUserTokenByUserAndRefreshTokenIdQueryResponse
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public Guid RefreshTokenId { get; set; }
         public DateTime ExpirationDate { get; set; }
     }

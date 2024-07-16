@@ -4,7 +4,6 @@ using ChatApp.Application.Models.Exceptions;
 using ChatApp.Application.Resources;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Localization;
-using System.Net;
 using System.Text;
 
 namespace ChatApp.Application.Configurations.ActionFilters
@@ -24,7 +23,7 @@ namespace ChatApp.Application.Configurations.ActionFilters
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             if (_currentUser?.UserId is null)
-                throw new AuthorizationException() { PublicErrorMessage = _localization.GetString(LocalizationKeys.InvalidToken), Method = "HttpRequestHelper.GetCurrentUserWithHeaders", ErrorCode = (int)HttpStatusCode.Unauthorized };
+                throw new AuthorizationException() { PublicErrorMessage = _localization.GetString(LocalizationKeys.InvalidToken), Method = "HttpRequestHelper.GetCurrentUserWithHeaders" };
         }
     }
 }

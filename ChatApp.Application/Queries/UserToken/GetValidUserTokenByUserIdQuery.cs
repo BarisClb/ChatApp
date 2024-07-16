@@ -7,7 +7,7 @@ namespace ChatApp.Application.Queries.UserToken
 {
     public class GetValidUserTokenByUserIdQuery : IRequest<GetValidUserTokenByUserIdQueryData>
     {
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
     }
 
     public class GetValidUserTokenByUserIdQueryHandler : IRequestHandler<GetValidUserTokenByUserIdQuery, GetValidUserTokenByUserIdQueryData>
@@ -22,7 +22,7 @@ namespace ChatApp.Application.Queries.UserToken
 
         public async Task<GetValidUserTokenByUserIdQueryData> Handle(GetValidUserTokenByUserIdQuery request, CancellationToken cancellationToken)
         {
-            if (request.UserId == 0)
+            if (request.UserId == Guid.Empty)
                 return null;
 
             return await _sqlDapperRepository.QueryFirstOrDefaultAsync<GetValidUserTokenByUserIdQueryData>(SqlQueryHelper.GetValidUserTokenByUserIdQuery, new { EntityStatusTypeActive = (int)EntityStatusType.Active, UserId = request.UserId, DateTimeUtcNow = DateTime.UtcNow });
@@ -31,7 +31,7 @@ namespace ChatApp.Application.Queries.UserToken
 
     public class GetValidUserTokenByUserIdQueryData
     {
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
         public Guid RefreshTokenId { get; set; }
         public DateTime IssueDate { get; set; }
         public DateTime ExpirationDate { get; set; }

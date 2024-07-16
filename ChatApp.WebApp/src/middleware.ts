@@ -1,15 +1,15 @@
-import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 import createIntlMiddleware from "next-intl/middleware";
 import { Constants } from "@/application/helpers/Constants";
+import { SessionUser } from "./application/models/common/Session";
+import { verifySession } from "./application/server/services/authService";
 
 export async function middleware(request: NextRequest) {
-	console.log("middleware");
-
 	const handleI18nRouting = createIntlMiddleware({
-		locales: Constants.languages,
-		defaultLocale: Constants.defaultLanguage,
+		locales: Constants.Languages,
+		defaultLocale: Constants.DefaultLanguage,
 		localePrefix: "always",
+		//localeDetection: false
 	});
 	const response = handleI18nRouting(request);
 
@@ -17,50 +17,40 @@ export async function middleware(request: NextRequest) {
 		return response;
 	}
 	const url = new URL(request.url);
-	console.log(url?.pathname?.substring(1, 3))
-	console.log(request.nextUrl.pathname?.split("/")[1])
-	response.headers.set("x-url", request.url ?? "");
-	response.headers.set("x-origin", url?.origin ?? "");
-	response.headers.set("x-pathname", url?.pathname ?? "");
-	response.headers.set("x-locale", url?.pathname?.substring(1, 3) ?? "");
-	response.headers.set("x-pathname-without-locale", url?.pathname?.substring(3) ?? "");
+	const locale = url?.pathname?.substring(1, 3);
+	response.headers.set("x-url", request.url ?? "/");
+	response.headers.set("x-origin", url?.origin ?? "/");
+	response.headers.set("x-pathname", url?.pathname ?? "/");
+	response.headers.set("x-locale", locale ?? "/");
+	response.headers.set("x-pathname-without-locale", url?.pathname?.substring(3) ?? "/");
+
+	const session = await verifySession(request, response, true);
+	if (!isAuthenticated(url?.pathname?.substring(3) ?? "/", session)) {
+		return NextResponse.redirect(new URL(`${locale}/unauthenticated`, request.url));
+	}
+
+	if (!isAuthorized(url?.pathname?.substring(3) ?? "/", session)) {
+		return NextResponse.redirect(new URL(`${locale}/unauthorized`, request.url));
+	}
 
 	return response;
-
-	// if (request.nextUrl.pathname.startsWith("/authTest")) {
-	// 	var isAuthenticated = await checkAuthentication(request);
-	// 	var isAuthorized = await checkAuthorization(request);
-	// 	console.log(isAuthenticated);
-	// 	console.log(isAuthorized);
-	// 	return NextResponse.redirect(new URL("/", request.url));
-	// }
 }
 
 async function checkIfUrlPathIsLocalized(urlPath: string) {
 	const pathArray = urlPath.split("/");
-	if (pathArray.length < 2 || !Constants.languages.includes(pathArray[1])) {
+	if (pathArray.length < 2 || !Constants.Languages.includes(pathArray[1])) {
 		return false;
 	}
 	return true;
 }
 
-// async function checkAuthentication(request: NextRequest): Promise<boolean> {
-// 	const session = await getToken({
-// 		req: request,
-// 		secret: process.env.NEXTAUTH_SECRET,
-// 	});
-// 	console.log(session);
-// 	return session != null;
-// }
+async function isAuthenticated(path: string, session: SessionUser | null): Promise<boolean> {
+	return !(Constants.AuthenticatedPaths.some((x) => path.startsWith(x)) && session == null);
+}
 
-// async function checkAuthorization(request: NextRequest): Promise<boolean> {
-// 	const session = await getToken({
-// 		req: request,
-// 		secret: process.env.NEXTAUTH_SECRET,
-// 	});
-// 	console.log(session);
-// 	return session?.user == null || session.user.IsAdmin == false ? false : true;
-// }
+async function isAuthorized(path: string, session: SessionUser | null): Promise<boolean> {
+	return !(Constants.AuthorizedPaths.some((x) => path.startsWith(x)) && session?.IsAdmin !== true);
+}
 
 export const config = {
 	matcher: ["/((?!api|_next|_vercel|.*\\..*).*)"],

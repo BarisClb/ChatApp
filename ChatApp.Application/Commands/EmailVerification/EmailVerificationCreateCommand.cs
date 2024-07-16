@@ -8,7 +8,7 @@ namespace ChatApp.Application.Commands.EmailVerification
 {
     public class EmailVerificationCreateCommand : IRequest<ApiResponse<EmailVerificationCreateCommandResponse>>
     {
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
         public EmailVerificationType EmailVerificationType { get; set; }
     }
 
@@ -33,7 +33,7 @@ namespace ChatApp.Application.Commands.EmailVerification
 
     public class EmailVerificationCreateCommandResponse
     {
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string EmailAddress { get; set; }

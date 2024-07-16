@@ -1,5 +1,5 @@
 {
-   "Errors":{
-      "globalError": "An unexpected problem has occured."
-   }
+	"Errors": {
+		"GlobalError": "An unexpected problem has occured."
+	}
 }

@@ -1,6 +1,6 @@
 export type LoginFormInput = {
-	userField: string;
-	password: string;
+	UserField: string;
+	Password: string;
 }
 
 export type LoginFormSubmitFunction = (formData: LoginFormInput) => string[];

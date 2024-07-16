@@ -1,5 +1,4 @@
-﻿using Azure.Core;
-using ChatApp.Application.Commands.EmailArchive;
+﻿using ChatApp.Application.Commands.EmailArchive;
 using ChatApp.Application.Commands.EmailVerification;
 using ChatApp.Application.Helpers;
 using ChatApp.Application.Interfaces.Services;
@@ -8,7 +7,6 @@ using ChatApp.Application.Models.Responses.Common;
 using ChatApp.Application.Models.Settings;
 using MediatR;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using Serilog;
 using System.Net;
 using System.Net.Mail;

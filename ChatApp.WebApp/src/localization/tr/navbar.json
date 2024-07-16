@@ -1,33 +1,30 @@
 {
 	"Navbar": {
-		"items": [
-			{ "text": "Chat", "path": "/chats" },
-			{ "text": "Genel Chat", "path": "/public-chat" },
-			{ "text": "Kişiler", "path": "/people" },
-			{ "text": "Arkadaşlar", "path": "/friends" }
+		"Items": [
+			{ "Text": "Chat", "Path": "/chats" },
+			{ "Text": "Genel Chat", "Path": "/public-chat" },
+			{ "Text": "Kişiler", "Path": "/people" },
+			{ "Text": "Arkadaşlar", "Path": "/friends" }
 		],
-		"profile": {
-			"title": "Hello, {username, select, Guest {Guest} other {{username}}}.",
-			"loginItems": [
+		"Profile": {
+			"Title": "Merhaba, {username, select, Guest {Misafir} other {{username}}}",
+			"LoginItems": [
 				{
-					"text": "Profil",
-					"path": "/profile"
-				},
-				{
-					"text": "Çıkış Yap",
-					"path": "/logout"
+					"Text": "Profil",
+					"Path": "/profile"
 				}
 			],
-			"logoutItems": [
+			"LogoutItems": [
 				{
-					"text": "Giriş Yap",
-					"path": "/login"
+					"Text": "Giriş Yap",
+					"Path": "/login"
 				},
 				{
-					"text": "Kayıt Ol",
-					"path": "/register"
+					"Text": "Kayıt Ol",
+					"Path": "/register"
 				}
-			]
+			],
+			"LogoutButton": "Çıkış Yap"
 		}
 	}
 }

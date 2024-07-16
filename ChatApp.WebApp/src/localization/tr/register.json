@@ -1,5 +1,40 @@
 {
 	"Register": {
-		"userField": "Username veya Email"
+		"Fields": {
+			"FirstName": "İsim",
+			"LastName": "Soyisim",
+			"Username": "Kullanıcı Adı",
+			"EmailAddress": "Email Adresi",
+			"Password": "Şifre",
+			"Language": "Dil"
+		},
+		"Errors": {
+			"FirstNameNotEmpty": "İsim boş bırakılamaz.",
+			"LastNameNotEmpty": "Soyisim boş bırakılamaz.",
+			"UsernameNotEmpty": "Kullanıcı Adı boş bırakılamaz.",
+			"EmailAddressNotEmpty": "Email Adresi boş bırakılamaz.",
+			"PasswordNotEmpty": "Şifre boş bırakılamaz.",
+			"LanguageNotSelected": "Dil seçimi yapmalısınız.",
+			"UsernameLength": "Username 5 ila 20 karakter arası olmalı.",
+			"PasswordLength": "Password 5 ila 20 karakter arası olmalı.",
+			"EmailAddressFormat": "Email Adresi formatı hatalı.",
+			"GenericError": "Kayıt işlemi başarısız oldu."
+		},
+		"Misc": {
+			"ShowPassword": "Göster",
+			"HidePassword": "Gizle",
+			"RegisterButton": "Gönder",
+			"RegisterHeader": "Kayıt Ol"
+		},
+		"LanguageOptions": [
+			{
+				"LanguageName": "Türkçe",
+				"LanguageCode": "tr"
+			},
+			{
+				"LanguageName": "İngilizce",
+				"LanguageCode": "en"
+			}
+		]
 	}
 }

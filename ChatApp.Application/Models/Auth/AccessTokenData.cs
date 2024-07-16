@@ -5,7 +5,7 @@ namespace ChatApp.Application.Models.Auth
     public class AccessTokenData
     {
         public Guid? AccessTokenId { get; set; }
-        public int? UserId { get; set; }
+        public Guid? UserId { get; set; }
         public UserStatusType? UserStatus { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

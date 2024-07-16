@@ -5,7 +5,7 @@ namespace ChatApp.Application.Models.Exceptions
     public class ApiValidationException : Exception
     {
         public IList<string> Errors { get; set; } = new List<string>();
-        public bool LogError { get; set; }
+        public bool LogException { get; set; }
 
         public ApiValidationException(List<ValidationFailure> failures)
         {

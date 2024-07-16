@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+option csharp_namespace = "ChatApp.Application.Protos";
+
+package grpcservicepackage;
+
+
+service GrpcServiceProto {
+  rpc ForwardMessageToChatUsers (ForwardMessageToChatUsersRequest) returns (ForwardMessageToChatUsersReply);
+}
+
+message ForwardMessageToChatUsersRequest {
+  repeated string guids = 1;
+  string message = 2;
+}
+
+message ForwardMessageToChatUsersReply {
+	bool isSuccess = 1;
+	string message = 2;
+}

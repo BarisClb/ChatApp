@@ -7,7 +7,7 @@ namespace ChatApp.Application.Queries.Language
 {
     public class GetLanguageByUserIdQuery : IRequest<GetLanguageByUserIdQueryData>
     {
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
     }
 
     public class GetLanguageByUserIdQueryHandler : IRequestHandler<GetLanguageByUserIdQuery, GetLanguageByUserIdQueryData>
@@ -22,7 +22,7 @@ namespace ChatApp.Application.Queries.Language
 
         public async Task<GetLanguageByUserIdQueryData> Handle(GetLanguageByUserIdQuery request, CancellationToken cancellationToken)
         {
-            if (request.UserId == 0)
+            if (request.UserId == Guid.Empty)
                 return null;
 
             return await _sqlDapperRepository.QueryFirstOrDefaultAsync<GetLanguageByUserIdQueryData>(SqlQueryHelper.GetLanguageByUserIdQuery, new { EntityStatusTypeActive = (int)EntityStatusType.Active, UserId = request.UserId });

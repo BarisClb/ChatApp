@@ -11,7 +11,6 @@ using ChatApp.Application.Queries.User;
 using ChatApp.Application.Queries.UserRole;
 using ChatApp.Application.Resources;
 using MediatR;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
@@ -20,8 +19,6 @@ using Newtonsoft.Json;
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
-using System.Net.Sockets;
-using System.Runtime.Intrinsics.Arm;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -64,7 +61,7 @@ namespace ChatApp.Infrastructure.Jwt
         {
             if (userInfo == null && userRoleInfo == null)
             {
-                var userAndUserRoleInfoResponse = await _mediator.Send(new GetUserAndUserRoleByUserIdQuery() { UserId = userId }) ?? throw new ApiException() { OverrideLogMessage = $"Null Response from GetUserAndUserRoleByUserIdQuery at 'JwtService.GenerateAccessToken'. Request: 'userId='{userId}', userInfo='{JsonConvert.SerializeObject(userInfo)}', userRoleInfo='{JsonConvert.SerializeObject(userRoleInfo)}', tokenExpirationDate='{JsonConvert.SerializeObject(userInfo)}''." };
+                var userAndUserRoleInfoResponse = await _mediator.Send(new GetUserAndUserRoleByUserIdQuery() { UserId = userId }) ?? throw new ApiException() { OverrideLogMessage = $"Null Response from GetUserAndUserRoleByUserIdQuery at 'JwtService.GenerateAccessToken'. Request: 'userId='{userId}', userInfo='{JsonConvert.SerializeObject(userInfo)}', userRoleInfo='{JsonConvert.SerializeObject(userRoleInfo)}', tokenExpirationDate='{tokenExpirationDate?.ToString()}''." };
                 var mappedUserAndUserRoleInfo = ModelMapHelper.MapUserAndUserRoleInfo(userAndUserRoleInfoResponse);
                 userInfo = mappedUserAndUserRoleInfo.userInfo;
                 userRoleInfo = mappedUserAndUserRoleInfo.userRoleInfo;
@@ -73,12 +70,12 @@ namespace ChatApp.Infrastructure.Jwt
             {
                 if (userInfo == null)
                 {
-                    var userResponse = await _mediator.Send(new GetUserByIdForTokenQuery() { UserId = userId }) ?? throw new ApiException() { OverrideLogMessage = $"Null Response from GetUserByIdForTokenQuery at 'JwtService.GenerateAccessToken'. Request: 'userId='{userId}', userInfo='{JsonConvert.SerializeObject(userInfo)}', userRoleInfo='{JsonConvert.SerializeObject(userRoleInfo)}', tokenExpirationDate='{JsonConvert.SerializeObject(userInfo)}''." };
+                    var userResponse = await _mediator.Send(new GetUserByIdForTokenQuery() { UserId = userId }) ?? throw new ApiException() { OverrideLogMessage = $"Null Response from GetUserByIdForTokenQuery at 'JwtService.GenerateAccessToken'. Request: {JsonConvert.SerializeObject(new { userId = userId, userInfo = userInfo != null ? JsonConvert.SerializeObject(userInfo) : null, userRoleInfo = userRoleInfo != null ? JsonConvert.SerializeObject(userRoleInfo) : null, tokenExpirationDate = tokenExpirationDate != null ? tokenExpirationDate.ToString() : null })}" };
                     userInfo = _mapper.Map<GenerateTokenUserInfo>(userResponse);
                 }
                 if (userRoleInfo == null)
                 {
-                    var userRole = await _mediator.Send(new GetUserRoleByUserIdQuery() { UserId = userId }) ?? throw new ApiException() { OverrideLogMessage = $"Null Response from GetUserRoleByUserIdQuery at 'JwtService.GenerateAccessToken'. Request: 'userId='{userId}', userInfo='{JsonConvert.SerializeObject(userInfo)}', userRoleInfo='{JsonConvert.SerializeObject(userRoleInfo)}', tokenExpirationDate='{JsonConvert.SerializeObject(userInfo)}''." };
+                    var userRole = await _mediator.Send(new GetUserRoleByUserIdQuery() { UserId = userId }) ?? throw new ApiException() { OverrideLogMessage = $"Null Response from GetUserRoleByUserIdQuery at 'JwtService.GenerateAccessToken'. Request: {JsonConvert.SerializeObject(new { userId = userId, userInfo = userInfo != null ? JsonConvert.SerializeObject(userInfo) : null, userRoleInfo = userRoleInfo != null ? JsonConvert.SerializeObject(userRoleInfo) : null, tokenExpirationDate = tokenExpirationDate != null ? tokenExpirationDate.ToString() : null })}" };
                     userRoleInfo = _mapper.Map<GenerateTokenUserRoleInfo>(userRole);
                 }
             }
@@ -101,10 +98,13 @@ namespace ChatApp.Infrastructure.Jwt
                 IsAdmin = userRoleInfo.IsAdmin.ToString(CultureInfo.InvariantCulture)
             };
 
+            DateTimeOffset expirationDate = tokenExpirationDate.HasValue ? new DateTimeOffset(tokenExpirationDate.Value) : DateTimeOffset.UtcNow.AddMinutes(_jwtSettings.AccessTokenExpirationMinutes);
+
             var tokenClaims = new List<Claim>()
             {
                 new(JwtRegisteredClaimNames.Iss, _jwtSettings.Issuer, ClaimValueTypes.String, _jwtSettings.Issuer),
                 new(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(CultureInfo.InvariantCulture), ClaimValueTypes.Integer64, _jwtSettings.Issuer),
+                new(JwtRegisteredClaimNames.Exp, expirationDate.ToString(CultureInfo.InvariantCulture), ClaimValueTypes.DateTime, _jwtSettings.Issuer),
                 new("AccessTokenId", accessTokenId.ToString(), ClaimValueTypes.String, _jwtSettings.Issuer),
                 new("UserId", accessTokenClaimsData.UserId, ClaimValueTypes.String, _jwtSettings.Issuer),
                 new("UserStatus", accessTokenClaimsData.UserStatus, ClaimValueTypes.Integer32, _jwtSettings.Issuer),
@@ -125,7 +125,7 @@ namespace ChatApp.Infrastructure.Jwt
                                                                        _jwtSettings.Audience,
                                                                        new ClaimsIdentity(tokenClaims),
                                                                        DateTime.UtcNow,
-                                                                       tokenExpirationDate ?? DateTime.UtcNow.AddHours(_jwtSettings.AccessTokenExpirationMinutes),
+                                                                       expirationDate.UtcDateTime,
                                                                        DateTime.UtcNow,
                                                                        signingCreds,
                                                                        encryptionCredentials);
@@ -136,11 +136,13 @@ namespace ChatApp.Infrastructure.Jwt
         public async Task<GenerateRefreshTokenData> GenerateRefreshToken(Guid userId, Guid? refreshTokenIdReq, DateTime? tokenExpirationDate = default)
         {
             Guid refreshTokenId = refreshTokenIdReq ?? Guid.NewGuid();
+            DateTimeOffset expirationDate = tokenExpirationDate.HasValue ? new DateTimeOffset(tokenExpirationDate.Value) : DateTimeOffset.UtcNow.AddMinutes(_jwtSettings.RefreshTokenExpirationMinutes);
 
             var tokenClaims = new List<Claim>()
             {
                 new(JwtRegisteredClaimNames.Iss, _jwtSettings.Issuer, ClaimValueTypes.String, _jwtSettings.Issuer),
                 new(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(CultureInfo.InvariantCulture), ClaimValueTypes.Integer64, _jwtSettings.Issuer),
+                new(JwtRegisteredClaimNames.Exp, expirationDate.ToString(CultureInfo.InvariantCulture), ClaimValueTypes.DateTime, _jwtSettings.Issuer),
                 new("UserId", userId.ToString(), ClaimValueTypes.String, _jwtSettings.Issuer),
                 new("RefreshTokenId", refreshTokenId.ToString(), ClaimValueTypes.String, _jwtSettings.Issuer)
             };
@@ -153,7 +155,7 @@ namespace ChatApp.Infrastructure.Jwt
                                                                        _jwtSettings.Audience,
                                                                        new ClaimsIdentity(tokenClaims),
                                                                        DateTime.UtcNow,
-                                                                       tokenExpirationDate ?? DateTime.UtcNow.AddHours(_jwtSettings.AccessTokenExpirationMinutes),
+                                                                       expirationDate.UtcDateTime,
                                                                        DateTime.UtcNow,
                                                                        signingCreds,
                                                                        encryptionCredentials);
@@ -186,7 +188,7 @@ namespace ChatApp.Infrastructure.Jwt
             catch (Exception ex)
             {
                 if (ex is SecurityTokenExpiredException)
-                    throw new AuthorizationException() { PublicErrorMessage = _localization.GetString(LocalizationKeys.SessionTimedOut), Method = "JwtService.GetRefreshTokenClaims", ErrorCode = (int)HttpStatusCode.Unauthorized };
+                    throw new AuthorizationException() { PublicErrorMessage = _localization.GetString(LocalizationKeys.SessionTimedOut), Method = "JwtService.GetRefreshTokenClaims" };
                 throw new ApiException() { ErrorCode = (int)HttpStatusCode.InternalServerError, Method = "JwtService.GetRefreshTokenClaims", OriginalException = ex };
             }
 
@@ -223,7 +225,7 @@ namespace ChatApp.Infrastructure.Jwt
             catch (Exception ex)
             {
                 if (ex is SecurityTokenExpiredException)
-                    throw new AuthorizationException() { PublicErrorMessage = _localization.GetString(LocalizationKeys.SessionTimedOut), Method = "JwtService.GetAccessTokenClaims", ErrorCode = (int)HttpStatusCode.Unauthorized };
+                    throw new AuthorizationException() { PublicErrorMessage = _localization.GetString(LocalizationKeys.SessionTimedOut), Method = "JwtService.GetAccessTokenClaims" };
                 throw new ApiException() { ErrorCode = (int)HttpStatusCode.InternalServerError, Method = "JwtService.GetAccessTokenClaims", OriginalException = ex };
             }
 
@@ -243,7 +245,7 @@ namespace ChatApp.Infrastructure.Jwt
 
             var accessTokenId = await _cacheService.GetValueAsync<Guid?>(string.Format(CacheHelper.AccessTokenIdKey, claimsData.UserId));
             if (accessTokenId == null || !(Guid.TryParse(claimsData.AccessTokenId, out Guid claimsAccessTokenId)) || accessTokenId != claimsAccessTokenId)
-                throw new AuthorizationException() { PublicErrorMessage = _localization.GetString(LocalizationKeys.InvalidToken), Method = "HttpRequestHelper.GetCurrentUser", ErrorCode = (int)HttpStatusCode.Unauthorized };
+                throw new AuthorizationException() { PublicErrorMessage = _localization.GetString(LocalizationKeys.InvalidToken), Method = "HttpRequestHelper.GetCurrentUser" };
 
             return claimsData;
         }
@@ -269,7 +271,7 @@ namespace ChatApp.Infrastructure.Jwt
         {
             var refreshToken = _httpContextAccessor?.HttpContext?.Request.GetHeaderValue("refresh-token");
             if (string.IsNullOrEmpty(refreshToken))
-                throw new AuthorizationException() { PublicErrorMessage = _localization.GetString(LocalizationKeys.SessionTimedOut), Method = "JwtService.RefreshAccessToken", ErrorCode = (int)HttpStatusCode.Unauthorized };
+                throw new AuthorizationException() { PublicErrorMessage = _localization.GetString(LocalizationKeys.SessionTimedOut), Method = "JwtService.RefreshAccessToken" };
             var refreshTokenClaims = await GetRefreshTokenClaims(refreshToken);
             var accessToken = await GenerateAccessToken(Guid.TryParse(refreshTokenClaims.UserId, out Guid parsedUserId) ? parsedUserId : Guid.Empty);
             return ApiResponse<UserSessionResponse>.Success(ModelMapHelper.MapTokenDataToUserSessionResponse(new() { AccessToken = accessToken?.AccessToken, AccessTokenClaims = accessToken.AccessTokenClaimsData, RefreshToken = refreshToken }), (int)HttpStatusCode.OK);

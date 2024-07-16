@@ -6,7 +6,6 @@ using ChatApp.Application.Models.Settings;
 using ChatApp.Domain.Entities;
 using ChatApp.Domain.Enums;
 using Microsoft.Extensions.Options;
-using System.Collections.Generic;
 
 namespace ChatApp.Application.Configurations.Database
 {
@@ -17,16 +16,14 @@ namespace ChatApp.Application.Configurations.Database
         private readonly IUserRoleSqlEfcRepository _userRoleSqlEfcRepository;
         private readonly ILanguageSqlEfcRepository _languageSqlEfcRepository;
         private readonly IBaseSqlDapperRepository _sqlDapperRepository;
-        private readonly IOptions<ProjectSettings> _projectSettings;
 
-        public DatabaseInitialization(IOptions<SqlDatabaseSeedingSettings> sqlDatabaseSeedingSettings, IUserSqlEfcRepository userSqlEfcRepository, IUserRoleSqlEfcRepository userRoleSqlEfcRepository, ILanguageSqlEfcRepository languageSqlEfcRepository, IBaseSqlDapperRepository baseSqlDapperRepository, IOptions<ProjectSettings> projectSettings)
+        public DatabaseInitialization(IOptions<SqlDatabaseSeedingSettings> sqlDatabaseSeedingSettings, IUserSqlEfcRepository userSqlEfcRepository, IUserRoleSqlEfcRepository userRoleSqlEfcRepository, ILanguageSqlEfcRepository languageSqlEfcRepository, IBaseSqlDapperRepository baseSqlDapperRepository)
         {
             _sqlDatabaseSeedingSettings = sqlDatabaseSeedingSettings ?? throw new ArgumentNullException(nameof(sqlDatabaseSeedingSettings));
             _userSqlEfcRepository = userSqlEfcRepository ?? throw new ArgumentNullException(nameof(userSqlEfcRepository));
             _userRoleSqlEfcRepository = userRoleSqlEfcRepository ?? throw new ArgumentNullException(nameof(userRoleSqlEfcRepository));
             _languageSqlEfcRepository = languageSqlEfcRepository ?? throw new ArgumentNullException(nameof(languageSqlEfcRepository));
             _sqlDapperRepository = baseSqlDapperRepository ?? throw new ArgumentNullException(nameof(baseSqlDapperRepository));
-            _projectSettings = projectSettings ?? throw new ArgumentNullException(nameof(projectSettings));
         }
 
 
@@ -42,16 +39,16 @@ namespace ChatApp.Application.Configurations.Database
             {
                 if (_sqlDatabaseSeedingSettings.Value.SeedAdmin)
                 {
-                    var adminAndAdminRole = await getAdminAndAdminRoleToSeed();
-                    await _userSqlEfcRepository.AddAsync(adminAndAdminRole.user);
-                    await _userRoleSqlEfcRepository.AddAsync(adminAndAdminRole.userRole);
+                    var (admin, adminRole) = await getAdminAndAdminRoleToSeed();
+                    await _userSqlEfcRepository.AddAsync(admin);
+                    await _userRoleSqlEfcRepository.AddAsync(adminRole);
                 }
 
                 if (_sqlDatabaseSeedingSettings.Value.SeedUsers)
                 {
-                    var userAndUserRoles = await getUsersAndUserRolesToSeed();
-                    await _userSqlEfcRepository.AddRangeAsync(userAndUserRoles.users);
-                    await _userRoleSqlEfcRepository.AddRangeAsync(userAndUserRoles.userRoles);
+                    var (users, userRoles) = await getUsersAndUserRolesToSeed();
+                    await _userSqlEfcRepository.AddRangeAsync(users);
+                    await _userRoleSqlEfcRepository.AddRangeAsync(userRoles);
                 }
             }
         }
@@ -59,23 +56,23 @@ namespace ChatApp.Application.Configurations.Database
 
         private static async Task<List<Language>> getLanguagesToSeed()
         {
-            return new()
-            {
+            return
+            [
                 new()
                 {
-                     Name = "English",
-                     Code = "en",
-                     DateCreated = DateTime.UtcNow,
-                     Status = EntityStatusType.Active
+                    Name = "English",
+                    Code = "en",
+                    DateCreated = DateTime.UtcNow,
+                    Status = EntityStatusType.Active
                 },
                 new()
                 {
-                     Name = "Turkish",
-                     Code = "tr",
-                     DateCreated = DateTime.UtcNow,
-                     Status = EntityStatusType.Active
+                    Name = "Turkish",
+                    Code = "tr",
+                    DateCreated = DateTime.UtcNow,
+                    Status = EntityStatusType.Active
                 }
-            };
+            ];
         }
 
         private async Task<(User user, UserRole userRole)> getAdminAndAdminRoleToSeed()
@@ -114,7 +111,6 @@ namespace ChatApp.Application.Configurations.Database
             var userEmailAddressPrefix = _sqlDatabaseSeedingSettings.Value.UserEmailAddress.Split('@')[0];
             List<User> users = new();
             List<UserRole> userRoles = new();
-            List<(User user, UserRole userRole)> userAndUserRoles = new();
             for (var i = 1 + userSequence; i <= _sqlDatabaseSeedingSettings.Value.NumberOfUsersToSeed + userSequence; i++)
             {
                 Guid userId = Guid.NewGuid();

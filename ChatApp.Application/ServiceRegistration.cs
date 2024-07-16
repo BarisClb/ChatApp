@@ -1,10 +1,12 @@
-﻿using ChatApp.Application.Configurations.Database;
+﻿using Asp.Versioning;
+using ChatApp.Application.Configurations.Database;
 using ChatApp.Application.Configurations.Middlewares;
 using ChatApp.Application.Configurations.Registrations;
 using ChatApp.Application.Helpers;
 using ChatApp.Application.Interfaces.Helpers;
 using ChatApp.Application.Models.Auth;
 using ChatApp.Application.Models.Settings;
+using ChatApp.Application.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +19,21 @@ namespace ChatApp.Application
     {
         public static void RegisterApplicationServices(this IServiceCollection services, IConfiguration configuration, ConfigureHostBuilder host)
         {
+            services.AddApiVersioning(options =>
+            {
+                options.ReportApiVersions = true;
+                options.AssumeDefaultVersionWhenUnspecified = true;
+                options.DefaultApiVersion = new ApiVersion(1, 0);
+                options.ApiVersionReader = ApiVersionReader.Combine(
+                    new QueryStringApiVersionReader("api-version"),
+                    new HeaderApiVersionReader("x-api-version"),
+                    new UrlSegmentApiVersionReader());
+            }).AddApiExplorer(options =>
+            {
+                options.GroupNameFormat = "'v'VVV";
+                options.SubstituteApiVersionInUrl = true;
+            });
+
             services.Configure<EmailServiceSettings>(configuration.GetSection("EmailServiceSettings"));
             services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
             services.Configure<LocalizationSettings>(configuration.GetSection("LocalizationSettings"));
@@ -29,6 +46,7 @@ namespace ChatApp.Application
 
             services.AddScoped<CurrentUser>();
             services.AddScoped<CurrentUserWithHeaders>();
+            services.AddScoped<TestService>();
             services.registerLanguageHelper(configuration);
             services.registerCorsService();
 
