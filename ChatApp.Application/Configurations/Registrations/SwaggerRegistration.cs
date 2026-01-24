@@ -66,9 +66,9 @@ namespace ChatApp.Application.Configurations.Registrations
             });
         }
 
-        public static void RegisterSwaggerUI(this WebApplication app, IWebHostEnvironment environment)
+        public static void RegisterSwaggerUI(this WebApplication app)
         {
-            //if (!environment.IsDevelopment()) // TODO: revert
+            //if (!app.Environment.IsDevelopment()) // TODO: revert
             //    return;
 
             app.UseSwagger();

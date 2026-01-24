@@ -6,7 +6,6 @@ namespace ChatApp.WebHub.Controllers
     [ApiController]
     public class ApiController : ControllerBase
     {
-
         [HttpGet("test")]
         public async Task<IActionResult> Test()
         {

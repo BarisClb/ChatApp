@@ -66,7 +66,7 @@ namespace ChatApp.Application
             app.UseMiddleware<IdentityHandlerMiddleware>();
 
             app.registerCorsApp();
-            app.RegisterSwaggerUI(app.Environment);
+            app.RegisterSwaggerUI();
             app.RegisterHangfireDashboard(configuration);
             app.RegisterHangfireJobs(configuration);
             app.RegisterLocalization(configuration);
